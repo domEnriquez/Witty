@@ -1,0 +1,20 @@
+﻿@model WittyEntryViewModel
+
+<form asp-action="Add" method="post" role="form">
+    <h4>Enter Witty Entry</h4>
+
+    <div class="mb-3">
+        <label asp-for="QuestionString" class="form-label"></label>
+        <input asp-for="QuestionString" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ResponseCategory" class="form-label"></label>
+        <select asp-for="ResponseCategory" asp-items="Model.ResponseCategories" class="form-control" ></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Response" class="form-label"></label>
+        <input asp-for="Response" class="form-control" />
+    </div>
+</form>

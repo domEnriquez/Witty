@@ -17,6 +17,8 @@ namespace Witty.ViewModels
 
         public string QuestionString { get; set; }
         public List<SelectListItem> ResponseCategories { get; set; }
+
+        public string ResponseCategory { get; set; }
         public string Response { get; set; }
 
         private void populateResponseCategories()
