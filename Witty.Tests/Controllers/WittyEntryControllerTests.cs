@@ -16,7 +16,6 @@ namespace Witty.Tests.Controllers
     public class WittyEntryControllerTests
     {
         WittyEntryController controller;
-        WittyEntryRepository wittyEntryRepo;
         Mock<WittyEntryRepository> mockRepo;
 
         [SetUp]
@@ -27,42 +26,12 @@ namespace Witty.Tests.Controllers
         }
 
         [Test]
-        public void whenAddPageCalled_ThenWittyEntryViewModelIsReturned()
+        public void WhenAddHttpGetActionCalled_ThenShowDefaultViewModelProperties()
         {
             WittyEntryViewModel viewModel = UnitTestUtility
                 .GetModel<WittyEntryViewModel>(controller.Add());
 
-            Assert.That(viewModel, Is.Not.Null);
-            Assert.That(viewModel, Is.TypeOf<WittyEntryViewModel>());
-        }
-        
-        [Test]
-        public void whenAddPageCalled_ThenQuestionFieldShouldBeEmpty()
-        {
-            WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Add());
-
-            Assert.That(viewModel.QuestionString, Is.Empty);
-        }
-
-        [Test]
-        public void whenAddPageCalled_ThenResponseCategoryIsPopulated()
-        {
-
-            WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Add());
-
-            Assert.That(viewModel.GetCategoryTextList(), 
-                Is.EquivalentTo(expectedCategoryTextList()));
-        }
-
-        [Test]
-        public void whenAddPageCalled_ThenResponseFieldShouldBeEmpty()
-        {
-            WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Add());
-
-            Assert.That(viewModel.Response, Is.Empty);
+            assertDefaultViewModelProperties(viewModel);
         }
 
         [Test]
@@ -94,14 +63,18 @@ namespace Witty.Tests.Controllers
             WittyEntryViewModel returnedViewModel = UnitTestUtility
                 .GetModel<WittyEntryViewModel>(controller.Add(viewModel));
 
+            assertDefaultViewModelProperties(returnedViewModel);
+            Assert.That(viewModel.AddSuccessMessage, Is.EqualTo(Messenger.AddWittyEntrySuccess));
+        }
 
+        private void assertDefaultViewModelProperties(WittyEntryViewModel returnedViewModel)
+        {
             Assert.That(returnedViewModel, Is.Not.Null);
             Assert.That(returnedViewModel, Is.TypeOf<WittyEntryViewModel>());
             Assert.That(returnedViewModel.QuestionString, Is.Empty);
             Assert.That(returnedViewModel.GetCategoryTextList(),
                 Is.EquivalentTo(expectedCategoryTextList()));
-            Assert.That(viewModel.Response, Is.Empty);
-            Assert.That(viewModel.AddSuccessMessage, Is.EqualTo(Messenger.AddWittyEntrySuccess));
+            Assert.That(returnedViewModel.Response, Is.Empty);
         }
 
         private List<string> expectedCategoryTextList()
