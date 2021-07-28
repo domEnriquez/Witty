@@ -1,7 +1,12 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using Witty.Constants;
 using Witty.Controllers;
+using Witty.Models;
+using Witty.Repositories;
+using Witty.Tests.Builders;
 using Witty.Tests.Utility;
 using Witty.ViewModels;
 
@@ -11,11 +16,14 @@ namespace Witty.Tests.Controllers
     public class WittyEntryControllerTests
     {
         WittyEntryController controller;
+        WittyEntryRepository wittyEntryRepo;
+        Mock<WittyEntryRepository> mockRepo;
 
         [SetUp]
         public void SetUp()
         {
-            controller = new WittyEntryController();
+            mockRepo = new Mock<WittyEntryRepository>();
+            controller = new WittyEntryController(mockRepo.Object);
         }
 
         [Test]
@@ -40,6 +48,64 @@ namespace Witty.Tests.Controllers
         [Test]
         public void whenAddPageCalled_ThenResponseCategoryIsPopulated()
         {
+
+            WittyEntryViewModel viewModel = UnitTestUtility
+                .GetModel<WittyEntryViewModel>(controller.Add());
+
+            Assert.That(viewModel.GetCategoryTextList(), 
+                Is.EquivalentTo(expectedCategoryTextList()));
+        }
+
+        [Test]
+        public void whenAddPageCalled_ThenResponseFieldShouldBeEmpty()
+        {
+            WittyEntryViewModel viewModel = UnitTestUtility
+                .GetModel<WittyEntryViewModel>(controller.Add());
+
+            Assert.That(viewModel.Response, Is.Empty);
+        }
+
+        [Test]
+        public void GivenNullWittyEntryViewModel_WhenAddActionCalled_ThenThrowArgumentNullException()
+        {
+            Assert.That(() => controller.Add(null), 
+                Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void GivenAValidWittyEntryViewModel_WhenAddActionCalled_ThenCallAddMethodInRepo()
+        {
+            WittyEntryViewModel viewModel = WittyEntryViewModelBuilder
+                .Simple()
+                .Build();
+
+            controller.Add(viewModel);
+
+            mockRepo.Verify(r => r.Add(It.IsAny<WittyEntry>()));
+        }
+
+        [Test]
+        public void GivenAValidWittyEntryViewModel_WhenAddActionCalled_ThenReturnDefaultViewWithSuccessIndication()
+        {
+            WittyEntryViewModel viewModel = WittyEntryViewModelBuilder
+                .Simple()
+                .Build();
+
+            WittyEntryViewModel returnedViewModel = UnitTestUtility
+                .GetModel<WittyEntryViewModel>(controller.Add(viewModel));
+
+
+            Assert.That(returnedViewModel, Is.Not.Null);
+            Assert.That(returnedViewModel, Is.TypeOf<WittyEntryViewModel>());
+            Assert.That(returnedViewModel.QuestionString, Is.Empty);
+            Assert.That(returnedViewModel.GetCategoryTextList(),
+                Is.EquivalentTo(expectedCategoryTextList()));
+            Assert.That(viewModel.Response, Is.Empty);
+            Assert.That(viewModel.AddSuccessMessage, Is.EqualTo(Messenger.AddWittyEntrySuccess));
+        }
+
+        private List<string> expectedCategoryTextList()
+        {
             List<string> expected = new List<string>();
 
             expected.Add(Messenger.ChooseCategory);
@@ -52,20 +118,8 @@ namespace Witty.Tests.Controllers
             expected.Add(Messenger.Reverse);
             expected.Add(Messenger.Misdirect);
             expected.Add(Messenger.Analogy);
-            
-            WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Add());
 
-            Assert.That(viewModel.GetResponseCategoriesTexts(), Is.EquivalentTo(expected));
-        }
-
-        [Test]
-        public void whenAddPageCalled_ThenResponseFieldShouldBeEmpty()
-        {
-            WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Add());
-
-            Assert.That(viewModel.Response, Is.Empty);
+            return expected;
         }
     }
 }

@@ -10,9 +10,7 @@ namespace Witty.ViewModels
     {
         public WittyEntryViewModel()
         {
-            QuestionString = string.Empty;
-            Response = string.Empty;
-            populateResponseCategories();
+            DefaultProperties();
         }
 
         public string QuestionString { get; set; }
@@ -20,6 +18,14 @@ namespace Witty.ViewModels
 
         public string ResponseCategory { get; set; }
         public string Response { get; set; }
+        public string AddSuccessMessage { get; set; }
+
+        public void DefaultProperties()
+        {
+            QuestionString = string.Empty;
+            Response = string.Empty;
+            populateResponseCategories();
+        }
 
         private void populateResponseCategories()
         {
@@ -37,9 +43,9 @@ namespace Witty.ViewModels
             ResponseCategories.AddUnselected(Messenger.Analogy);
         }
 
-        public List<string> GetResponseCategoriesTexts() 
+        public List<string> GetCategoryTextList() 
         {
             return ResponseCategories.Select(x => x.Text).ToList();
-        } 
+        }
     }
 }
