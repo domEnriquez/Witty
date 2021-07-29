@@ -24,6 +24,7 @@ namespace Witty.ViewModels
         {
             QuestionString = string.Empty;
             Response = string.Empty;
+            AddSuccessMessage = string.Empty;
             populateResponseCategories();
         }
 

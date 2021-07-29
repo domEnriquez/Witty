@@ -1,6 +1,15 @@
 ﻿@model WittyEntryViewModel
 
 
+@if (Model.AddSuccessMessage != string.Empty)
+{
+    <div class="container">
+        <div class="col-12">
+            @Model.AddSuccessMessage;
+        </div>
+    </div>
+}
+
 <form asp-action="Add" method="post" role="form" class="container">
     <div class="row">
         <div class="col-12">
