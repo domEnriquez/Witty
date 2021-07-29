@@ -4,6 +4,8 @@ namespace Witty.Models
 {
     public class Response
     {
+        public int Id { get; set; }
+
         public string ResponseCategory { get; set; }
         public string ResponseString { get; set; }
 
