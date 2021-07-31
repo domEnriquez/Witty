@@ -1,9 +1,9 @@
-﻿using Witty.Constants;
+﻿using System.Collections.Generic;
+using Witty.Models;
 using Witty.ViewModels;
 
 namespace Witty.Tests.Builders
 {
-
     public class WittyEntryViewModelBuilder
     {
         private readonly WittyEntryViewModel viewModel = new WittyEntryViewModel();
@@ -13,32 +13,16 @@ namespace Witty.Tests.Builders
             return new WittyEntryViewModelBuilder();
         }
 
-        public static WittyEntryViewModelBuilder Simple()
+        public WittyEntryViewModelBuilder WithQuestion(string question)
         {
-            return Default()
-                .WithQuestionString("What?")
-                .WithResponseCategory(Messenger.Analogy)
-                .WithResponse("Yes");
-        }
-
-
-        public WittyEntryViewModelBuilder WithQuestionString(string questionString)
-        {
-            viewModel.QuestionString = questionString;
+            viewModel.Question = question;
 
             return this;
         }
 
-        public WittyEntryViewModelBuilder WithResponseCategory(string responseCategory)
+        public WittyEntryViewModelBuilder WithResponses(List<Response> responses)
         {
-            viewModel.ResponseCategory = responseCategory;
-
-            return this;
-        }
-
-        public WittyEntryViewModelBuilder WithResponse(string response)
-        {
-            viewModel.Response = response;
+            viewModel.Responses = responses;
 
             return this;
         }

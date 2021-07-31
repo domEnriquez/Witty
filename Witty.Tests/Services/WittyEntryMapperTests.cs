@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using Witty.Constants;
 using Witty.Mappers;
 using Witty.Models;
@@ -20,15 +19,9 @@ namespace Witty.Tests.Services
         }
 
         [Test]
-        public void GivenWittyEntryViewModelIsNull_WhenMap_ThenThrowArgumentNullException()
+        public void adapt_AddWittyEntryFormViewModel_WittyEntry()
         {
-            Assert.That(() => mapper.Map(null), Throws.TypeOf<ArgumentNullException>());
-        }
-
-        [Test]
-        public void adaptWittyEntryViewModelToWittyEntry()
-        {
-            WittyEntryViewModel wittyEntryVm = WittyEntryViewModelBuilder
+            AddWittyEntryFormViewModel formViewModel = AddWittyEntryFormViewModelBuilder
                 .Default()
                 .WithQuestionString("What?")
                 .WithResponseCategory(Messenger.Analogy)
@@ -43,10 +36,37 @@ namespace Witty.Tests.Services
                     .WithResponseStrings("Yes").Build())
                 .Build();
 
-            AreEqual(mapper.Map(wittyEntryVm), expected);
+            AreEqual(mapper.Map(formViewModel), expected);
+        }
+
+        public void adapt_WittyEntry_To_WittyEntryViewModel()
+        {
+            WittyEntry wittyEntry = WittyEntryBuilder
+                .Default()
+                .WithQuestion("What?")
+                .WithResponses(ResponseListBuilder.Default()
+                    .WithResponseCategories(Messenger.Analogy)
+                    .WithResponseStrings("Yes").Build())
+                .Build();
+
+            WittyEntryViewModel expected = WittyEntryViewModelBuilder
+                .Default()
+                .WithQuestion("What?")
+                .WithResponses(ResponseListBuilder.Default()
+                    .WithResponseCategories(Messenger.Analogy)
+                    .WithResponseStrings("Yes").Build())
+                .Build();
+
+            AreEqual(mapper.Map(wittyEntry), expected);
         }
 
         public void AreEqual(WittyEntry actual, WittyEntry expected)
+        {
+            Assert.That(actual.Question, Is.EqualTo(expected.Question));
+            Assert.That(actual.Responses, Is.EquivalentTo(expected.Responses));
+        }
+
+        public void AreEqual(WittyEntryViewModel actual, WittyEntryViewModel expected)
         {
             Assert.That(actual.Question, Is.EqualTo(expected.Question));
             Assert.That(actual.Responses, Is.EquivalentTo(expected.Responses));

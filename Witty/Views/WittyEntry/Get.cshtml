@@ -1,0 +1,33 @@
+﻿@using Witty.Models
+@model WittyEntryViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            @Model.Question
+        </div>
+    </div>
+    @{ 
+        var groupedResponse = Model.ResponsesGroupedByCategory();
+
+        foreach(var group in groupedResponse)
+            {
+                <div class="row">
+                    <div class="col-12">
+                        @group.Key
+                    </div>
+                </div>
+
+                foreach(Response r in group)
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            @r.ResponseString
+                        </div>
+                    </div>
+                }
+            }
+    }
+
+</div>
+

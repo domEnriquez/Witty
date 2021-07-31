@@ -17,15 +17,31 @@ namespace Witty.Controllers
             this.wittyEntryRepo = wittyEntryRepo;
         }
 
-        public IActionResult Add()
+        public IActionResult Index()
         {
-            WittyEntryViewModel viewModel = new WittyEntryViewModel();
+            GetWittyEntryFormViewModel viewModel = new GetWittyEntryFormViewModel();
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult Add(WittyEntryViewModel viewModel)
+        public IActionResult Get(GetWittyEntryFormViewModel formViewModel)
+        {
+            WittyEntry wittyEntry = wittyEntryRepo.Get(formViewModel.Question);
+            WittyEntryViewModel vm = new WittyEntryMapper().Map(wittyEntry);
+
+            return View(vm);
+        }
+
+        public IActionResult Add()
+        {
+            AddWittyEntryFormViewModel viewModel = new AddWittyEntryFormViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Add(AddWittyEntryFormViewModel viewModel)
         {
             if (viewModel == null)
                 throw new ArgumentNullException();
@@ -37,7 +53,7 @@ namespace Witty.Controllers
             viewModel.DefaultProperties();
             viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
 
-            return View(new WittyEntryViewModel());
+            return View(new AddWittyEntryFormViewModel());
         }
     }
 }

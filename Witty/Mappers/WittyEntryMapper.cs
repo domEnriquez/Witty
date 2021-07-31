@@ -6,7 +6,7 @@ namespace Witty.Mappers
 {
     public class WittyEntryMapper
     {
-        public WittyEntry Map(WittyEntryViewModel viewModel)
+        public WittyEntry Map(AddWittyEntryFormViewModel viewModel)
         {
             if (viewModel == null)
                 throw new ArgumentNullException();
@@ -24,6 +24,19 @@ namespace Witty.Mappers
             wittyEntry.Responses.Add(response);
 
             return wittyEntry;
+        }
+
+        public WittyEntryViewModel Map(WittyEntry wittyEntry)
+        {
+            if (wittyEntry == null)
+                throw new ArgumentNullException();
+
+            WittyEntryViewModel viewModel = new WittyEntryViewModel();
+
+            viewModel.Question = wittyEntry.Question;
+            viewModel.Responses = wittyEntry.Responses;
+
+            return viewModel;
         }
     }
 }
