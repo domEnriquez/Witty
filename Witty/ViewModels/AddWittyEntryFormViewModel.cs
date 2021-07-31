@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Witty.Constants;
 using Witty.Extensions;
@@ -13,9 +14,11 @@ namespace Witty.ViewModels
             DefaultProperties();
         }
 
+        [Display(Name ="Question")]
         public string QuestionString { get; set; }
         public List<SelectListItem> ResponseCategories { get; set; }
 
+        [Display(Name = "Response Category")]
         public string ResponseCategory { get; set; }
         public string Response { get; set; }
         public string AddSuccessMessage { get; set; }

@@ -2,8 +2,8 @@
 @model WittyEntryViewModel
 
 <div class="container">
-    <div class="row">
-        <div class="col-12">
+    <div class="row mt-5">
+        <div class="col-12 text-center">
             @Model.Question
         </div>
     </div>
@@ -12,22 +12,18 @@
 
         foreach(var group in groupedResponse)
             {
-                <div class="row">
-                    <div class="col-12">
+                <div class="card mt-5">
+                    <div class="card-header">
                         @group.Key
                     </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (Response r in group)
+                        {
+                            <li class="list-group-item">@r.ResponseString</li>
+                        }
+                    </ul>
                 </div>
-
-                foreach(Response r in group)
-                {
-                    <div class="row">
-                        <div class="col-12">
-                            @r.ResponseString
-                        </div>
-                    </div>
-                }
             }
     }
-
 </div>
 

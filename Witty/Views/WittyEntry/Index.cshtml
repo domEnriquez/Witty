@@ -1,12 +1,12 @@
 ﻿@model GetWittyEntryFormViewModel
 
 
-<form asp-action="Get" method="post" role="form" class="container">
+<form asp-action="Get" method="post" role="form" class="container mt-5">
     <div class="row mb-3">
-        <label asp-for="Question" class="form-label"></label>
-        <input asp-for="Question" class="form-control col-12" />
-    </div>
-    <div class="row mb-3">
+        <label asp-for="Question" class="form-label text-center"></label>
+        <div class="col-9">
+            <input asp-for="Question" class="form-control" />
+        </div>
         <div class="col-3">
             <input type="submit" class="btn btn-primary" value="Submit" />
         </div>
