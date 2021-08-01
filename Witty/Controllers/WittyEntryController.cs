@@ -46,14 +46,22 @@ namespace Witty.Controllers
             if (viewModel == null)
                 throw new ArgumentNullException();
 
-            WittyEntry we = new WittyEntryMapper().Map(viewModel);
+            if(ModelState.IsValid)
+            {
+                WittyEntry we = new WittyEntryMapper().Map(viewModel);
 
-            wittyEntryRepo.Add(we);
+                if(wittyEntryRepo.Exists(we.Question))
+                    wittyEntryRepo.AddResponses(we);
+                else
+                    wittyEntryRepo.Add(we);
 
-            viewModel.DefaultProperties();
-            viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
+                viewModel.DefaultProperties();
+                viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
 
-            return View(new AddWittyEntryFormViewModel());
+                return View(new AddWittyEntryFormViewModel());
+            }
+
+            return View(viewModel);
         }
     }
 }

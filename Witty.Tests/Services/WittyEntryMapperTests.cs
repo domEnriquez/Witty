@@ -19,7 +19,7 @@ namespace Witty.Tests.Services
         }
 
         [Test]
-        public void adapt_AddWittyEntryFormViewModel_WittyEntry()
+        public void adapt_AddWittyEntryFormViewModel_To_WittyEntry()
         {
             AddWittyEntryFormViewModel formViewModel = AddWittyEntryFormViewModelBuilder
                 .Default()

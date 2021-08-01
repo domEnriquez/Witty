@@ -26,5 +26,20 @@ namespace Witty.Persistence.Repositories
             appDbContext.Add(wittyEntry);
             appDbContext.SaveChanges();
         }
+
+        public void AddResponses(WittyEntry wittyEntry)
+        {
+            WittyEntry oldWe = Get(wittyEntry.Question);
+            oldWe.Responses.AddRange(wittyEntry.Responses);
+            appDbContext.SaveChanges();
+        }
+
+        public bool Exists(string question)
+        {
+            if (Get(question) != null)
+                return true;
+            else
+                return false;
+        }
     }
 }

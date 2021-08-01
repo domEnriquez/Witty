@@ -15,12 +15,19 @@ namespace Witty.ViewModels
         }
 
         [Display(Name ="Question")]
+        [Required(ErrorMessage = "Please enter a question")]
         public string QuestionString { get; set; }
+
         public List<SelectListItem> ResponseCategories { get; set; }
 
         [Display(Name = "Response Category")]
+        [Required]
+        [ValidResponseCategory]
         public string ResponseCategory { get; set; }
+
+        [Required]
         public string Response { get; set; }
+
         public string AddSuccessMessage { get; set; }
 
         public void DefaultProperties()

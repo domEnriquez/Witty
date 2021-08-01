@@ -6,5 +6,7 @@ namespace Witty.Repositories
     {
         WittyEntry Get(string question);
         void Add(WittyEntry wittyEntry);
+        void AddResponses(WittyEntry wittyEntry);
+        bool Exists(string question);
     }
 }
