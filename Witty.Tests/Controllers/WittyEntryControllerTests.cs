@@ -25,6 +25,9 @@ namespace Witty.Tests.Controllers
             mockRepo
                 .Setup(r => r.Get(It.IsAny<string>()))
                 .Returns(new WittyEntry());
+            mockRepo
+                .Setup(r => r.Exists(It.IsAny<string>()))
+                .Returns(true);
 
             controller = new WittyEntryController(mockRepo.Object);
         }
@@ -88,13 +91,19 @@ namespace Witty.Tests.Controllers
         }
 
         [Test]
-        public void GivenValidWittyEntryViewModel_WhenHttpPostAddActionCalled_ThenCallAddMethodInRepo()
+        public void GivenValidWittyEntryViewModelWithNewQuestion_WhenHttpPostAddActionCalled_ThenCallAddMethodInRepo()
         {
+            WittyEntryController controller1;
+            mockRepo
+                .Setup(r => r.Exists(It.IsAny<string>()))
+                .Returns(false);
+            controller1 = new WittyEntryController(mockRepo.Object);
+
             AddWittyEntryFormViewModel viewModel = AddWittyEntryFormViewModelBuilder
                 .Simple()
                 .Build();
 
-            controller.Add(viewModel);
+            controller1.Add(viewModel);
 
             mockRepo.Verify(r => r.Add(It.IsAny<WittyEntry>()));
             mockRepo.Verify(r => r.AddResponses(It.IsAny<WittyEntry>()), Times.Never);
@@ -127,7 +136,7 @@ namespace Witty.Tests.Controllers
                 .Simple()
                 .Build();
 
-            controller.Add(viewModel);
+            controller1.Add(viewModel);
 
             mockRepo.Verify(r => r.AddResponses(It.IsAny<WittyEntry>()));
             mockRepo.Verify(r => r.Add(It.IsAny<WittyEntry>()), Times.Never);
@@ -143,6 +152,23 @@ namespace Witty.Tests.Controllers
             Assert.That(viewModel, Is.Not.Null);
             Assert.That(viewModel, Is.TypeOf<GetWittyEntryFormViewModel>());
             Assert.That(viewModel.Question, Is.Empty);
+        }
+
+        [Test]
+        public void GivenWittyEntryDoesNotExists_WhenHttpPostGetActionCalled_ThenReturnFormViewModelWithNotExistsIndication()
+        {
+            WittyEntryController controller1;
+            mockRepo
+                .Setup(r => r.Exists(It.IsAny<string>()))
+                .Returns(false);
+            controller1 = new WittyEntryController(mockRepo.Object);
+
+            GetWittyEntryFormViewModel viewModel = UnitTestUtility
+                .GetModel<GetWittyEntryFormViewModel>(controller.Get(new GetWittyEntryFormViewModel()));
+
+            Assert.That(viewModel, Is.Not.Null);
+            Assert.That(viewModel, Is.TypeOf<GetWittyEntryFormViewModel>());
+            Assert.That(viewModel.NotExistsMessage, Is.EqualTo("Question does not exists"));
         }
 
         [Test]

@@ -1,5 +1,14 @@
 ﻿@model GetWittyEntryFormViewModel
 
+@if (Model.NotExistsMessage != string.Empty)
+{
+    <div class="container">
+        <div class="col-12">
+            @Model.NotExistsMessage
+        </div>
+    </div>
+}
+
 
 <form asp-action="Get" method="post" role="form" class="container mt-5">
     <div class="row mb-3">

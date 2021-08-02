@@ -8,5 +8,6 @@
         }
 
         public string Question { get; set; }
+        public string NotExistsMessage { get; set; }
     }
 }

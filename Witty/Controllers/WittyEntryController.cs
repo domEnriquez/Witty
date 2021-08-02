@@ -27,10 +27,21 @@ namespace Witty.Controllers
         [HttpPost]
         public IActionResult Get(GetWittyEntryFormViewModel formViewModel)
         {
-            WittyEntry wittyEntry = wittyEntryRepo.Get(formViewModel.Question);
-            WittyEntryViewModel vm = new WittyEntryMapper().Map(wittyEntry);
+            if (formViewModel == null)
+                throw new ArgumentNullException();
 
-            return View(vm);
+            if(wittyEntryRepo.Exists(formViewModel.Question))
+            {
+                WittyEntry wittyEntry = wittyEntryRepo.Get(formViewModel.Question);
+                WittyEntryViewModel vm = new WittyEntryMapper().Map(wittyEntry);
+
+                return View(vm);
+            }
+
+            formViewModel.NotExistsMessage = "Question does not exists";
+
+            return View("Index", formViewModel);
+
         }
 
         public IActionResult Add()
