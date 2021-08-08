@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css">
     <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.js"></script>
@@ -19,7 +22,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" 
+                    <a class="nav-link active" aria-current="page"
                        asp-controller="WittyEntry" asp-action="Index">Home</a>
                     <a class="nav-link" asp-controller="WittyEntry" asp-action="Add">Add</a>
                 </div>
@@ -29,5 +32,11 @@
     <div>
         @RenderBody()
     </div>
+
+    <script src="~/js/wittyEntryService.js"></script>
+    <script src="~/js/getController.js"></script>
+
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -39,10 +39,12 @@ namespace Witty.Tests.Services
             AreEqual(mapper.Map(formViewModel), expected);
         }
 
+        [Test]
         public void adapt_WittyEntry_To_WittyEntryViewModel()
         {
             WittyEntry wittyEntry = WittyEntryBuilder
                 .Default()
+                .WithId(2)
                 .WithQuestion("What?")
                 .WithResponses(ResponseListBuilder.Default()
                     .WithResponseCategories(Messenger.Analogy)
@@ -51,6 +53,7 @@ namespace Witty.Tests.Services
 
             WittyEntryViewModel expected = WittyEntryViewModelBuilder
                 .Default()
+                .WithId(2)
                 .WithQuestion("What?")
                 .WithResponses(ResponseListBuilder.Default()
                     .WithResponseCategories(Messenger.Analogy)
@@ -68,8 +71,9 @@ namespace Witty.Tests.Services
 
         public void AreEqual(WittyEntryViewModel actual, WittyEntryViewModel expected)
         {
-            Assert.That(actual.Question, Is.EqualTo(expected.Question));
-            Assert.That(actual.Responses, Is.EquivalentTo(expected.Responses));
+            Assert.That(actual.WittyEntry.Id, Is.EqualTo(expected.WittyEntry.Id));
+            Assert.That(actual.WittyEntry.Question, Is.EqualTo(expected.WittyEntry.Question));
+            Assert.That(actual.WittyEntry.Responses, Is.EquivalentTo(expected.WittyEntry.Responses));
         }
     }
 }

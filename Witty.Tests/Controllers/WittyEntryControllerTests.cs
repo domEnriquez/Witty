@@ -23,7 +23,7 @@ namespace Witty.Tests.Controllers
         {
             mockRepo = new Mock<WittyEntryRepository>();
             mockRepo
-                .Setup(r => r.Get(It.IsAny<string>()))
+                .Setup(r => r.GetByQuestion(It.IsAny<string>()))
                 .Returns(new WittyEntry());
             mockRepo
                 .Setup(r => r.Exists(It.IsAny<string>()))
@@ -176,7 +176,7 @@ namespace Witty.Tests.Controllers
         {
             controller.Get(new GetWittyEntryFormViewModel());
 
-            mockRepo.Verify(r => r.Get(It.IsAny<string>()));
+            mockRepo.Verify(r => r.GetByQuestion(It.IsAny<string>()));
         }
 
         [Test]

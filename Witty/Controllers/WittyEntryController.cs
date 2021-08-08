@@ -32,7 +32,7 @@ namespace Witty.Controllers
 
             if(wittyEntryRepo.Exists(formViewModel.Question))
             {
-                WittyEntry wittyEntry = wittyEntryRepo.Get(formViewModel.Question);
+                WittyEntry wittyEntry = wittyEntryRepo.GetByQuestion(formViewModel.Question);
                 WittyEntryViewModel vm = new WittyEntryMapper().Map(wittyEntry);
 
                 return View(vm);
@@ -66,6 +66,7 @@ namespace Witty.Controllers
                 else
                     wittyEntryRepo.Add(we);
 
+                wittyEntryRepo.Save();
                 viewModel.DefaultProperties();
                 viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
 

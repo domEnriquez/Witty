@@ -33,8 +33,9 @@ namespace Witty.Mappers
 
             WittyEntryViewModel viewModel = new WittyEntryViewModel();
 
-            viewModel.Question = wittyEntry.Question;
-            viewModel.Responses = wittyEntry.Responses;
+            viewModel.WittyEntry.Id = wittyEntry.Id;
+            viewModel.WittyEntry.Question = wittyEntry.Question;
+            viewModel.WittyEntry.Responses = wittyEntry.Responses;
 
             return viewModel;
         }

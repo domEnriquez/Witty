@@ -14,7 +14,14 @@ namespace Witty.Persistence.Repositories
             this.appDbContext = appDbContext;
         }
 
-        public WittyEntry Get(string question)
+        public WittyEntry GetById(string id)
+        {
+            return appDbContext.WittyEntries
+                .Include(w => w.Responses)
+                .FirstOrDefault(w => w.Id.ToString() == id);
+        }
+
+        public WittyEntry GetByQuestion(string question)
         {
             return appDbContext.WittyEntries
                 .Include(w => w.Responses)
@@ -24,22 +31,32 @@ namespace Witty.Persistence.Repositories
         public void Add(WittyEntry wittyEntry)
         {
             appDbContext.Add(wittyEntry);
-            appDbContext.SaveChanges();
         }
 
         public void AddResponses(WittyEntry wittyEntry)
         {
-            WittyEntry oldWe = Get(wittyEntry.Question);
+            WittyEntry oldWe = GetByQuestion(wittyEntry.Question);
             oldWe.Responses.AddRange(wittyEntry.Responses);
-            appDbContext.SaveChanges();
         }
 
         public bool Exists(string question)
         {
-            if (Get(question) != null)
+            if (GetByQuestion(question) != null)
                 return true;
             else
                 return false;
+        }
+
+        public void DeleteResponse(string wittyEntryId, string responseId)
+        {
+            WittyEntry we = GetById(wittyEntryId);
+            Response r = we.Responses.FirstOrDefault(re => re.Id.ToString() == responseId);
+            we.Responses.Remove(r);
+        }
+
+        public void Save()
+        {
+            appDbContext.SaveChanges();
         }
     }
 }

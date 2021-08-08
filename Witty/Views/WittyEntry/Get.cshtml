@@ -1,10 +1,10 @@
 ﻿@using Witty.Models
 @model WittyEntryViewModel
 
-<div class="container">
+<div id="response-list-container" class="container">
     <div class="row mt-5">
         <div class="col-12 text-center">
-            @Model.Question
+            @Model.WittyEntry.Question
         </div>
     </div>
     @{ 
@@ -16,10 +16,18 @@
                     <div class="card-header">
                         @group.Key
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush response-list">
                         @foreach (Response r in group)
                         {
-                            <li class="list-group-item">@r.ResponseString</li>
+                        <li class="list-group-item response-item">
+                            @r.ResponseString
+                            <div class="float-end response-menu d-none">
+                                <i 
+                                   class="fas fa-trash-alt delete-icon" 
+                                   data-response-id="@r.Id"
+                                   data-witty-entry-id="@Model.WittyEntry.Id"></i>
+                            </div>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -27,3 +35,10 @@
     }
 </div>
 
+@section Scripts {
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        GetController.init("response-list-container");
+    });
+</script>
+}

@@ -6,12 +6,16 @@ namespace Witty.ViewModels
 {
     public class WittyEntryViewModel
     {
-        public string Question { get; set; }
-        public List<Response> Responses { get; set; }
+        public WittyEntryViewModel()
+        {
+            WittyEntry = new WittyEntry();
+        }
+
+        public WittyEntry WittyEntry { get; set; }
 
         public IEnumerable<IGrouping<string, Response>> ResponsesGroupedByCategory()
         {
-            return Responses.GroupBy(r => r.ResponseCategory);
+            return WittyEntry.Responses.GroupBy(r => r.ResponseCategory);
         }
 
     }

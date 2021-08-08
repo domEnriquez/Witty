@@ -13,16 +13,23 @@ namespace Witty.Tests.Builders
             return new WittyEntryViewModelBuilder();
         }
 
+        internal WittyEntryViewModelBuilder WithId(int id)
+        {
+            viewModel.WittyEntry.Id = id;
+
+            return this;
+        }
+
         public WittyEntryViewModelBuilder WithQuestion(string question)
         {
-            viewModel.Question = question;
+            viewModel.WittyEntry.Question = question;
 
             return this;
         }
 
         public WittyEntryViewModelBuilder WithResponses(List<Response> responses)
         {
-            viewModel.Responses = responses;
+            viewModel.WittyEntry.Responses = responses;
 
             return this;
         }
