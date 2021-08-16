@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using Witty.Models;
 using Witty.Repositories;
@@ -16,6 +17,9 @@ namespace Witty.Persistence.Repositories
 
         public WittyEntry GetById(string id)
         {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException();
+
             return appDbContext.WittyEntries
                 .Include(w => w.Responses)
                 .FirstOrDefault(w => w.Id.ToString() == id);

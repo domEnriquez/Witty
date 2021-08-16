@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Witty.Constants;
 using Witty.Models;
 
 namespace Witty.Tests.Builders
@@ -10,6 +11,18 @@ namespace Witty.Tests.Builders
         public static WittyEntryBuilder Default()
         {
             return new WittyEntryBuilder();
+        }
+
+        public WittyEntryBuilder Simple()
+        {
+            wittyEntry.Id = 0;
+            wittyEntry.Question = "What?";
+            wittyEntry.Responses = ResponseListBuilder
+                .Default()
+                .WithResponseCategories(Messenger.Analogy)
+                .WithResponseStrings("Yes").Build();
+
+            return this;
         }
 
         public WittyEntryBuilder WithId(int id)
