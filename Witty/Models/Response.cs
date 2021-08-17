@@ -9,6 +9,10 @@ namespace Witty.Models
         public string ResponseCategory { get; set; }
         public string ResponseString { get; set; }
 
+        public int WittyEntryId { get; set; }
+
+        public WittyEntry WittyEntry { get; set; }
+
         public override bool Equals(object obj)
         {
             return obj is Response response &&
