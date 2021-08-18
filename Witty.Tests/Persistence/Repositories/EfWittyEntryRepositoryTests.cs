@@ -34,6 +34,119 @@ namespace Witty.Tests.Persistence.Repositories
         }
 
         [Test]
+        public void GivenExistingWittyEntryId_WhenGetById_ThenReturnWittyEntry()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("GetWittyEntryById");
+            int expectedId = seedWithOneWittyEntry(builder.Options);
+
+            using(AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry we = efRepo.GetById(expectedId.ToString());
+
+                Assert.That(we.Id, Is.EqualTo(expectedId));
+            }
+        }
+
+        [Test]
+        public void GivenNonExistingWittyEntryId_WhenGetById_ThenReturnNull()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("GetWittyEntryById");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+
+                Assert.That(efRepo.GetById("10"), Is.Null);
+            }
+        }
+
+        [Test]
+        public void GivenNullOrEmptyQuestion_WhenGetByQuestion_ThenThrowArgumentException()
+        {
+            Assert.That(() => repo.GetByQuestion(null),
+                Throws.TypeOf<ArgumentException>());
+
+            Assert.That(() => repo.GetByQuestion(string.Empty),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GivenExistingQuestion_WhenGetByQuestion_ThenReturnWittyEntry()
+        {
+            string question = "What?";
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("GetWittyEntryByQuestion");
+            seedWithOneWittyEntry(builder.Options, question);
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry we = efRepo.GetByQuestion(question);
+
+                Assert.That(we.Question, Is.EqualTo(question));
+            }
+        }
+
+        [Test]
+        public void GivenNonExistingQuestion_WhenGetByQuestion_ThenReturnNull()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("GetWittyEntryByQuestion");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+
+                Assert.That(efRepo.GetByQuestion("When?"), Is.Null);
+            }
+        }
+
+        [Test]
+        public void GivenNullWittyEntry_WhenAddResponses_ThenThrowArgumentException()
+        {
+            Assert.That(() => repo.AddResponses(null),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GivenWittyEntryWithUpdatedResponses_WhenAddResponses_ThenSaveUpdatedResponses()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("WittyEntryAddResponse");
+            int seededId = seedWithOneWittyEntry(builder.Options, "What?");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry newWe = WittyEntryBuilder
+                    .Default()
+                    .WithId(seededId)
+                    .WithQuestion("What?")
+                    .WithResponses(ResponseListBuilder.Default().BuildWithEmptyResponseFields(2))
+                    .Build();
+
+                efRepo.AddResponses(newWe);
+                efRepo.Save();
+            }
+
+            using(AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry we = efRepo.GetById(seededId.ToString());
+
+                Assert.That(we.Responses.Count, Is.EqualTo(2));
+            }
+        }
+
+        [Test]
         public void GivenNullWittyEntry_WhenAdd_ThenThrowArgumentNullException()
         {
             Assert.That(() => repo.Add(null),
@@ -41,7 +154,7 @@ namespace Witty.Tests.Persistence.Repositories
         }
 
         [Test]
-        public void GivenValidWittyEntry_WhenAdd_ThenStoreWittyEntryInDatabase()
+        public void GivenValidWittyEntry_WhenAdd_ThenAddWittyEntryInDatabase()
         {
             WittyEntry we = WittyEntryBuilder
                 .Default()
@@ -56,6 +169,95 @@ namespace Witty.Tests.Persistence.Repositories
                 EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
                 efRepo.Add(we);
                 Assert.That(context.Entry(we).State, Is.EqualTo(EntityState.Added));
+            }
+        }
+
+        [Test]
+        public void GivenEmptyIds_WhenDeleteResponse_ThenThrowArgumentException()
+        {
+            Assert.That(() => repo.DeleteResponse(string.Empty, "1"),
+                Throws.TypeOf<ArgumentException>());
+
+            Assert.That(() => repo.DeleteResponse("1", string.Empty),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GivenExistingWittyEntryIdAndResponseId_WhenDeleteResponse_ThenDeleteTargetResponse()
+        {
+            int numOfResponses = 2;
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>(); ;
+            builder.UseInMemoryDatabase("WittyEntryDeleteResponse");
+            int seededId = seedWithOneWittyEntry(builder.Options, "What?", numOfResponses);
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry we = efRepo.GetById(seededId.ToString());
+
+                efRepo.DeleteResponse(seededId.ToString(), we.Responses[0].Id.ToString());
+                efRepo.Save();
+            }
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                WittyEntry we = efRepo.GetById(seededId.ToString());
+
+                Assert.That(we.Responses.Count, Is.EqualTo(1));
+            }
+        }
+
+        private int seedWithOneWittyEntry(DbContextOptions<AppDbContext> options)
+        {
+            using (AppDbContext seedContext = new AppDbContext(options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(seedContext);
+                WittyEntry we = new WittyEntry();
+                efRepo.Add(we);
+                efRepo.Save();
+
+                return we.Id;
+            }
+        }
+
+        private int seedWithOneWittyEntry(DbContextOptions<AppDbContext> options, 
+            string question)
+        {
+            using (AppDbContext seedContext = new AppDbContext(options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(seedContext);
+                WittyEntry we = WittyEntryBuilder
+                    .Default()
+                    .WithQuestion(question)
+                    .Build();
+
+                efRepo.Add(we);
+                efRepo.Save();
+
+                return we.Id;
+            }
+        }
+
+        private int seedWithOneWittyEntry(DbContextOptions<AppDbContext> options,
+            string question, int numOfEmptyResponses)
+        {
+            using (AppDbContext seedContext = new AppDbContext(options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(seedContext);
+                WittyEntry we = WittyEntryBuilder
+                    .Default()
+                    .WithQuestion(question)
+                    .WithResponses(ResponseListBuilder
+                        .Default()
+                        .BuildWithEmptyResponseFields(numOfEmptyResponses))
+                    .Build();
+
+                efRepo.Add(we);
+                efRepo.Save();
+
+                return we.Id;
             }
         }
     }

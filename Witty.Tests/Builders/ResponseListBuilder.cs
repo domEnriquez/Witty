@@ -41,5 +41,13 @@ namespace Witty.Tests.Builders
 
             return response;
         }
+
+        public List<Response> BuildWithEmptyResponseFields(int numOfResponses)
+        {
+            for (int i = 0; i < numOfResponses; i++)
+                response.Add(new Response());
+
+            return response;
+        }
     }
 }

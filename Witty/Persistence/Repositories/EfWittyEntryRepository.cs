@@ -27,6 +27,9 @@ namespace Witty.Persistence.Repositories
 
         public WittyEntry GetByQuestion(string question)
         {
+            if (string.IsNullOrEmpty(question))
+                throw new ArgumentException();
+
             return appDbContext.WittyEntries
                 .Include(w => w.Responses)
                 .FirstOrDefault(w => w.Question == question);
@@ -39,6 +42,9 @@ namespace Witty.Persistence.Repositories
 
         public void AddResponses(WittyEntry wittyEntry)
         {
+            if (wittyEntry == null)
+                throw new ArgumentException();
+
             WittyEntry oldWe = GetByQuestion(wittyEntry.Question);
             oldWe.Responses.AddRange(wittyEntry.Responses);
         }
@@ -53,6 +59,9 @@ namespace Witty.Persistence.Repositories
 
         public void DeleteResponse(string wittyEntryId, string responseId)
         {
+            if (string.IsNullOrEmpty(wittyEntryId) || string.IsNullOrEmpty(responseId))
+                throw new ArgumentException();
+
             WittyEntry we = GetById(wittyEntryId);
             Response r = we.Responses.FirstOrDefault(re => re.Id.ToString() == responseId);
             we.Responses.Remove(r);
