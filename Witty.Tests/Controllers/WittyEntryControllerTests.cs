@@ -119,7 +119,6 @@ namespace Witty.Tests.Controllers
             AddWittyEntryFormViewModel returnedViewModel = UnitTestUtility
                 .GetModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
 
-            assertDefaultAddFormViewModelProperties(returnedViewModel);
             Assert.That(viewModel.AddSuccessMessage, Is.EqualTo(Messenger.AddWittyEntrySuccess));
         }
 

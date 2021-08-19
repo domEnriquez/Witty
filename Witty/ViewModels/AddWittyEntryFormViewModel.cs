@@ -11,8 +11,11 @@ namespace Witty.ViewModels
     {
         public AddWittyEntryFormViewModel()
         {
-            DefaultProperties();
-        }
+            QuestionString = string.Empty;
+            Response = string.Empty;
+            AddSuccessMessage = string.Empty;
+            populateResponseCategories();
+        } 
 
         [Display(Name ="Question")]
         [Required(ErrorMessage = "Please enter a question")]
@@ -29,14 +32,6 @@ namespace Witty.ViewModels
         public string Response { get; set; }
 
         public string AddSuccessMessage { get; set; }
-
-        public void DefaultProperties()
-        {
-            QuestionString = string.Empty;
-            Response = string.Empty;
-            AddSuccessMessage = string.Empty;
-            populateResponseCategories();
-        }
 
         private void populateResponseCategories()
         {

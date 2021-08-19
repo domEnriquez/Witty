@@ -67,10 +67,8 @@ namespace Witty.Controllers
                     wittyEntryRepo.Add(we);
 
                 wittyEntryRepo.Save();
-                viewModel.DefaultProperties();
-                viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
 
-                return View(new AddWittyEntryFormViewModel());
+                viewModel.AddSuccessMessage = Messenger.AddWittyEntrySuccess;
             }
 
             return View(viewModel);
