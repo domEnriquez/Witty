@@ -52,6 +52,11 @@
         let responseList = responseItem.closest(".response-list");
 
         responseList.removeChild(responseItem);
+
+        if (responseList.querySelector(".response-item") === null) {
+            responseList.closest(".response-card-group").remove();
+        }
+
     }
 
     let failDelete = function () {
