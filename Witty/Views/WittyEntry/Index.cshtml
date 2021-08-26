@@ -14,10 +14,18 @@
     <div class="row mb-3">
         <label asp-for="Question" class="form-label text-center"></label>
         <div class="col-9">
-            <input asp-for="Question" class="form-control" />
+            <input id="autoComplete" asp-for="Question" class="form-control" />
         </div>
         <div class="col-3">
             <input type="submit" class="btn btn-primary" value="Submit" />
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            AutoCompleteService.init();
+        });
+    </script>
+}

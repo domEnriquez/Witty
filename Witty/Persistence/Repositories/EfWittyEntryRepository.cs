@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Witty.Models;
 using Witty.Repositories;
@@ -65,6 +66,17 @@ namespace Witty.Persistence.Repositories
             WittyEntry we = GetById(wittyEntryId);
             Response r = we.Responses.FirstOrDefault(re => re.Id.ToString() == responseId);
             we.Responses.Remove(r);
+        }
+
+        public List<string> GetMatchingQuestions(string keyword)
+        {
+            if(string.IsNullOrEmpty(keyword))
+                throw new ArgumentException();
+
+            return appDbContext
+                .WittyEntries
+                .Where(w => w.Question.Contains(keyword))
+                .Select(e => e.Question).ToList();
         }
 
         public void Save()

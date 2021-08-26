@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using Witty.Models;
 using Witty.Persistence;
 using Witty.Persistence.Repositories;
@@ -206,6 +207,51 @@ namespace Witty.Tests.Persistence.Repositories
                 WittyEntry we = efRepo.GetById(seededId.ToString());
 
                 Assert.That(we.Responses.Count, Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void GivenNullOrEmptyKeyword_WhenGetMatchingQuestions_ThenThrowArgumentException()
+        {
+            Assert.That(() => repo.GetMatchingQuestions(null),
+                Throws.TypeOf<ArgumentException>());
+
+            Assert.That(() => repo.GetMatchingQuestions(string.Empty),
+                Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void GivenQuestionsThatMatchesKeyword_WhenGetMatchingQuestions_ThenReturnQuestions()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseInMemoryDatabase("KeywordHasMatchingQuestions");
+            int seededId = seedWithOneWittyEntry(builder.Options, "How are you?");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                List<string> questions = efRepo.GetMatchingQuestions("How");
+
+                Assert.That(questions, Has.Count.EqualTo(1));
+                Assert.That(questions[0], Is.EqualTo("How are you?"));
+            }
+        }
+
+        [Test]
+        public void GivenNoMatchingQuestionsInGivenKeyword_WhenGetMatchingQuestions_ThenReturnEmptyString()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseInMemoryDatabase("KeywordHasNoMatchingQuestions");
+            int seededId = seedWithOneWittyEntry(builder.Options, "How are you?");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                List<string> questions = efRepo.GetMatchingQuestions("aaa");
+
+                Assert.That(questions, Has.Count.EqualTo(0));
             }
         }
 

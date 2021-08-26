@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using Witty.Repositories;
 
 namespace Witty.Controllers.Api
@@ -28,9 +29,25 @@ namespace Witty.Controllers.Api
             }
             catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failed");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failure");
             }
         }
-        
+
+        [Produces("application/json")]
+        [HttpGet("search/{keyword}")]
+        public IActionResult SearchQuestion(string keyword)
+        {
+            try
+            {
+                List<string> questions = wittyEntryRepository.GetMatchingQuestions(keyword);
+
+                return Ok(questions);
+            }
+            catch
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failure");
+            }
+        }
+
     }
 }

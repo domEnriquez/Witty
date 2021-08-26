@@ -1,4 +1,5 @@
-﻿using Witty.Models;
+﻿using System.Collections.Generic;
+using Witty.Models;
 
 namespace Witty.Repositories
 {
@@ -10,6 +11,7 @@ namespace Witty.Repositories
         void AddResponses(WittyEntry wittyEntry);
         bool Exists(string question);
         void DeleteResponse(string wittyEntryId, string responseId);
+        public List<string> GetMatchingQuestions(string keyword);
         void Save();
     }
 }
