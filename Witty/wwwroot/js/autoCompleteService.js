@@ -3,13 +3,11 @@
         const autoCompleteJs = new autoComplete({
             selector: "#autoComplete",
             data: {
-                src: async (query) => {                   
-                    let xhr = new XMLHttpRequest();
-                    xhr.open("GET", "/api/wittyEntry/search/" + query, false);
+                src: async (query) => {
+                    const source = await fetch("/api/wittyEntry/search/" + query);
+                    const data = await source.json();
 
-                    xhr.send();
-
-                    return JSON.parse(xhr.responseText);
+                    return data;
                 }
             },
             resultItem: {
