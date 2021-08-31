@@ -16,6 +16,12 @@ namespace Witty.Persistence.Repositories
             this.appDbContext = appDbContext;
         }
 
+        public List<WittyEntry> GetAll()
+        {
+            return appDbContext.WittyEntries
+                .Include(w => w.Responses).ToList();
+        }
+
         public WittyEntry GetById(string id)
         {
             if (string.IsNullOrEmpty(id))

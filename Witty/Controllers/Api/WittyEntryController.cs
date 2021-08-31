@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Witty.Models;
 using Witty.Repositories;
 
 namespace Witty.Controllers.Api
@@ -49,5 +51,26 @@ namespace Witty.Controllers.Api
             }
         }
 
+        [HttpGet("random")]
+        public IActionResult GetRandomWittyEntry()
+        {
+            try
+            {
+                WittyEntry we = wittyEntryRepository
+                    .GetAll()
+                    .OrderBy(w => Guid.NewGuid())
+                    .FirstOrDefault();
+
+                Response r = we.Responses
+                    .OrderBy(re => Guid.NewGuid())
+                    .FirstOrDefault();
+
+                return Ok(new { Question = we.Question, Response = r.ResponseString });
+            }
+            catch
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failure");
+            }
+        }
     }
 }

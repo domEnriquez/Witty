@@ -25,6 +25,42 @@ namespace Witty.Tests.Persistence.Repositories
         }
 
         [Test]
+        public void GivenNoStoredWittyEntries_WhenGetAll_ThenReturnEmptyList()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseInMemoryDatabase("GetAll_NoStoredWittyEntries");
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                List<WittyEntry> wes = efRepo.GetAll();
+                
+                Assert.That(wes, Has.Count.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void GivenStoredWittyEntries_WhenGetAll_ThenReturnStoredWittyEntries()
+        {
+            DbContextOptionsBuilder<AppDbContext> builder =
+                new DbContextOptionsBuilder<AppDbContext>();
+            builder.UseInMemoryDatabase("GetAll_HasStoredWittyEntries");
+            seedWithOneWittyEntry(builder.Options);
+            seedWithOneWittyEntry(builder.Options);
+
+            using (AppDbContext context = new AppDbContext(builder.Options))
+            {
+                EfWittyEntryRepository efRepo = new EfWittyEntryRepository(context);
+                List<WittyEntry> wes = efRepo.GetAll();
+
+                Assert.That(wes, Has.Count.EqualTo(2));
+                Assert.That(wes[0].Responses, Is.Not.Null);
+                Assert.That(wes[1].Responses, Is.Not.Null);
+            }   
+        }
+
+        [Test]
         public void GivenNullOrEmptyId_WhenGetById_ThenThrowArgumentException()
         {
             Assert.That(() => repo.GetById(null),
@@ -38,7 +74,7 @@ namespace Witty.Tests.Persistence.Repositories
         public void GivenExistingWittyEntryId_WhenGetById_ThenReturnWittyEntry()
         {
             DbContextOptionsBuilder<AppDbContext> builder =
-                new DbContextOptionsBuilder<AppDbContext>(); ;
+                new DbContextOptionsBuilder<AppDbContext>();
             builder.UseInMemoryDatabase("GetWittyEntryById");
             int expectedId = seedWithOneWittyEntry(builder.Options);
 

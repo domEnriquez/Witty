@@ -5,6 +5,7 @@ namespace Witty.Repositories
 {
     public interface WittyEntryRepository
     {
+        List<WittyEntry> GetAll();
         WittyEntry GetById(string id);
         WittyEntry GetByQuestion(string question);   
         void Add(WittyEntry wittyEntry);

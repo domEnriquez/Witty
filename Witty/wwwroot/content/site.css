@@ -1,2 +1,13 @@
 ﻿body {
+
+}
+
+/* Autocomplete input field */
+.autoComplete_wrapper {
+    display: block;
+}
+
+#autoComplete {
+    width: 100%;
+    border-radius: 0.25rem;
 }

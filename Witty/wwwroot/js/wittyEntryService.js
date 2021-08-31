@@ -11,7 +11,23 @@
         xhr.send();
     }
 
+    let getRandomWittyEntry = function (done, fail) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", "/api/wittyEntry/random", true);
+
+        xhr.onload = function () {
+            if (this.status === 200) {
+                done(JSON.parse(this.responseText));
+            }
+        };
+
+        xhr.onerror = fail;
+
+        xhr.send();
+    }
+
     return {
-        deleteResponse: deleteResponse
+        deleteResponse: deleteResponse,
+        getRandomWittyEntry: getRandomWittyEntry
     }
 }();

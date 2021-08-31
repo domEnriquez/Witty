@@ -22,10 +22,24 @@
     </div>
 </form>
 
+<div class="container">
+    <div class="row">
+        <div id="random-question" class="col-12">
+
+        </div>
+    </div>
+    <div class="row">
+        <div id="random-response" class="col-12">
+
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             AutoCompleteService.init();
+            RandomWittyEntryGenerator.init();
         });
     </script>
 }

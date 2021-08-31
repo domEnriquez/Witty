@@ -20,15 +20,14 @@
     </div>
     <div class="row mb-3">
         <label asp-for="QuestionString" class="form-label"></label>
-        <input asp-for="QuestionString" class="form-control col-12" />
+        <input id="autoComplete" asp-for="QuestionString" class="form-control col-12" />
     </div>
 
     <div class="row mb-3">
         <label asp-for="ResponseCategory" class="form-label"></label>
-        <select asp-for="ResponseCategory" 
-                asp-items="Model.ResponseCategories" 
+        <select asp-for="ResponseCategory"
+                asp-items="Model.ResponseCategories"
                 class="form-control col-12">
-
         </select>
     </div>
 
@@ -44,3 +43,10 @@
     </div>
 </form>
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            AutoCompleteService.init();
+        });
+    </script>
+}
