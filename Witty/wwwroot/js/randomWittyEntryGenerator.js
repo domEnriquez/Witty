@@ -11,9 +11,16 @@
     }
 
     let randomUpdate = function () {
+        wittyEntryService.getRandomWittyEntry(initialDoneGetRandom, failGetRandom);
+
         setInterval(function () {
             wittyEntryService.getRandomWittyEntry(doneGetRandom, failGetRandom);
         }, 3000);
+    }
+
+    let initialDoneGetRandom = function (randEntry) {
+        document.getElementById("random-section").classList.add("random-box");
+        doneGetRandom(randEntry);
     }
 
     let doneGetRandom = function (randEntry) {

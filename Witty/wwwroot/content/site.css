@@ -1,13 +1,99 @@
-﻿body {
+﻿
+
+/* Custom site styles*/
+
+.submit-btn {
+    background-color: #FB8B23;
+    border-color: #FB8B23;
+    color: #fff;
+    height: 100%;
+}
+
+.orange-color {
+    color: #FB8B23;
+}
+
+.search-question-heading {
+    font-size: 1.275em;
+}
+
+.random-container {
+    margin-top: 40px;
+}
+
+.random-heading {
+    text-align: center;
+    font-size: 25px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.random-box {
+    border: 2px solid #FB8B23;
+    border-radius: 1em;
+    padding: 20px;
+}
+
+#random-question {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#random-response {
+    color: #FB8B23;
+    font-size: 25px;
 
 }
 
 /* Autocomplete input field */
 .autoComplete_wrapper {
     display: block;
+    padding: 0;
 }
 
 #autoComplete {
     width: 100%;
     border-radius: 0.25rem;
 }
+
+.autoComplete_wrapper > input.autoComplete-add {
+    height: 2.4rem;
+    background: #fff;
+    padding-left: 10px;
+    border-color: #ced4da;
+}
+
+.autoComplete_wrapper > input.autoComplete-search-question {
+    border-color: #FB8B23;
+}
+
+/* Bootstrap Overrides */
+.navbar {
+    background-color: #FB8B23;
+    border-color: #FB8B23;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navbar-light .navbar-brand {
+    color: #fff;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Lato', sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+

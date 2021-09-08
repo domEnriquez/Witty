@@ -14,31 +14,31 @@
 
 <form asp-action="Add" method="post" role="form" class="container">
     <div class="row">
-        <div class="col-12">
-            <h4>Enter Witty Entry</h4>
+        <div class="col-12 mt-4 mb-3 ps-0">
+            <h4 class="fw-bold orange-color">Enter Witty Entry</h4>
         </div>
     </div>
-    <div class="row mb-3">
-        <label asp-for="QuestionString" class="form-label"></label>
-        <input id="autoComplete" asp-for="QuestionString" class="form-control col-12" />
+    <div class="row mb-4">
+        <label asp-for="QuestionString" class="form-label ps-0"></label>
+        <input id="autoComplete" asp-for="QuestionString" class="form-control col-12 autoComplete-add" />
     </div>
 
-    <div class="row mb-3">
-        <label asp-for="ResponseCategory" class="form-label"></label>
+    <div class="row mb-4">
+        <label asp-for="ResponseCategory" class="form-label ps-0"></label>
         <select asp-for="ResponseCategory"
                 asp-items="Model.ResponseCategories"
                 class="form-control col-12">
         </select>
     </div>
 
-    <div class="row mb-3">
-        <label asp-for="Response" class="form-label"></label>
+    <div class="row mb-4">
+        <label asp-for="Response" class="form-label ps-0"></label>
         <input asp-for="Response" class="form-control col-12" />
     </div>
 
     <div class="row mb-3">
-        <div class="col-3">
-            <input type="submit" class="btn btn-primary" value="Submit" />
+        <div class="col-3 ps-0">
+            <input type="submit" class="btn submit-btn" value="Submit" />
         </div>
     </div>
 </form>

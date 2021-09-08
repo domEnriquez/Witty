@@ -12,25 +12,26 @@
 
 <form asp-action="Get" method="post" role="form" class="container mt-5">
     <div class="row mb-3">
-        <label asp-for="Question" class="form-label text-center"></label>
+        <label asp-for="Question" class="form-label fw-bold mb-3 orange-color search-question-heading"></label>
         <div class="col-9">
-            <input id="autoComplete" asp-for="Question" class="form-control" />
+            <input id="autoComplete" asp-for="Question" class="form-control autoComplete-search-question" />
         </div>
         <div class="col-3">
-            <input type="submit" class="btn btn-primary" value="Submit" />
+            <input type="submit" class="btn submit-btn" value="Submit" />
         </div>
     </div>
 </form>
 
-<div class="container">
+<div class="container random-container">
     <div class="row">
-        <div id="random-question" class="col-12">
-
+        <div class="col-12 random-heading">
+            Random Witty Response
         </div>
     </div>
     <div class="row">
-        <div id="random-response" class="col-12">
-
+        <div id="random-section" class="col-8 offset-2">
+            <div id="random-question"></div>
+            <div id="random-response"></div>
         </div>
     </div>
 </div>
