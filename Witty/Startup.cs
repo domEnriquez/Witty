@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using Witty.Persistence;
 using Witty.Persistence.Repositories;
 using Witty.Repositories;
@@ -23,8 +24,16 @@ namespace Witty
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+            } else
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
 
             services.AddControllersWithViews();
 
@@ -42,6 +51,7 @@ namespace Witty
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.ApplicationServices.GetService<AppDbContext>().Database.Migrate();
 
             app.UseEndpoints(endpoints =>
             {
