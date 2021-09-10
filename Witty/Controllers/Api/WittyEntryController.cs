@@ -45,7 +45,7 @@ namespace Witty.Controllers.Api
 
                 return Ok(questions);
             }
-            catch
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failure");
             }
@@ -67,7 +67,7 @@ namespace Witty.Controllers.Api
 
                 return Ok(new { Question = we.Question, Response = r.ResponseString });
             }
-            catch
+            catch (Exception)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Database access failure");
             }

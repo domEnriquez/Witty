@@ -36,7 +36,7 @@ namespace Witty.Tests.Controllers
         public void WhenHttpGetAddActionCalled_ThenShowDefaultFormViewModelProperties()
         {
             AddWittyEntryFormViewModel viewModel = UnitTestUtility
-                .GetModel<AddWittyEntryFormViewModel>(controller.Add());
+                .GetViewResultModel<AddWittyEntryFormViewModel>(controller.Add());
 
             assertDefaultAddFormViewModelProperties(viewModel);
         }
@@ -60,7 +60,7 @@ namespace Witty.Tests.Controllers
             controller.ModelState.AddModelError("QuestionString", "Required");
 
             AddWittyEntryFormViewModel retVm = UnitTestUtility
-                .GetModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
+                .GetViewResultModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
 
             Assert.That(retVm.QuestionString, Is.Empty);
             Assert.That(retVm.GetCategoryTextList(),
@@ -81,7 +81,7 @@ namespace Witty.Tests.Controllers
             controller.ModelState.AddModelError("Response", "Required");
 
             AddWittyEntryFormViewModel retVm = UnitTestUtility
-                .GetModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
+                .GetViewResultModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
 
             Assert.That(retVm.QuestionString, Is.EqualTo("What?"));
             Assert.That(retVm.GetCategoryTextList(),
@@ -117,7 +117,7 @@ namespace Witty.Tests.Controllers
                 .Build();
 
             AddWittyEntryFormViewModel returnedViewModel = UnitTestUtility
-                .GetModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
+                .GetViewResultModel<AddWittyEntryFormViewModel>(controller.Add(viewModel));
 
             Assert.That(viewModel.AddSuccessMessage, Is.EqualTo(Messenger.AddWittyEntrySuccess));
         }
@@ -146,7 +146,7 @@ namespace Witty.Tests.Controllers
         public void WhenIndexActionCalled_ThenShowFormViewModelWithDefaultProperties()
         {
             GetWittyEntryFormViewModel viewModel = UnitTestUtility
-                .GetModel<GetWittyEntryFormViewModel>(controller.Index());
+                .GetViewResultModel<GetWittyEntryFormViewModel>(controller.Index());
 
             Assert.That(viewModel, Is.Not.Null);
             Assert.That(viewModel, Is.TypeOf<GetWittyEntryFormViewModel>());
@@ -163,7 +163,7 @@ namespace Witty.Tests.Controllers
             controller1 = new WittyEntryController(mockRepo.Object);
 
             GetWittyEntryFormViewModel viewModel = UnitTestUtility
-                .GetModel<GetWittyEntryFormViewModel>(controller.Get(new GetWittyEntryFormViewModel()));
+                .GetViewResultModel<GetWittyEntryFormViewModel>(controller.Get(new GetWittyEntryFormViewModel()));
 
             Assert.That(viewModel, Is.Not.Null);
             Assert.That(viewModel, Is.TypeOf<GetWittyEntryFormViewModel>());
@@ -182,7 +182,7 @@ namespace Witty.Tests.Controllers
         public void GivenValidFormViewModel_WhenHttpPostGetActionCalled_ThenReturnWittyEntryViewModelObject()
         {
             WittyEntryViewModel viewModel = UnitTestUtility
-                .GetModel<WittyEntryViewModel>(controller.Get(new GetWittyEntryFormViewModel()));
+                .GetViewResultModel<WittyEntryViewModel>(controller.Get(new GetWittyEntryFormViewModel()));
 
             Assert.That(viewModel, Is.Not.Null);
             Assert.That(viewModel, Is.TypeOf<WittyEntryViewModel>());
