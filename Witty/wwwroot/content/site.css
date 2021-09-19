@@ -45,6 +45,24 @@
 
 }
 
+.btn-outline-default {
+    color: #FB8B23;
+    border-color: #FB8B23;
+}
+
+    .btn-outline-default:hover {
+        color: #FFF;
+        background-color: #FB8B23;
+        border-color: #FB8B23;
+    }
+
+    .btn-outline-default.dropdown-toggle.show {
+        color: #FFF;
+        background-color: #FB8B23;
+        border-color: #FB8B23;
+    }
+
+
 /* Autocomplete input field */
 .autoComplete_wrapper {
     display: block;

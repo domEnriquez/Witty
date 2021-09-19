@@ -1,42 +1,29 @@
-﻿let GetController = function (wittyEntryService)
+﻿let GetWittyEntryController = function (wittyEntryService, filterWittyResponses, utilityFunctions)
 {
     let deleteIcon;
 
     let init = function (containerId) {
         let container = document.getElementById(containerId);
         let responseItems = container.getElementsByClassName("response-item");
-        addHoverEvents(responseItems);
+        utilityFunctions.addEvents(responseItems, "mouseover", showMenu);
+        utilityFunctions.addEvents(responseItems, "mouseout", hideMenu);
+
         let deleteIcons = container.getElementsByClassName("delete-icon");
-        addDeleteEvents(deleteIcons);
+        utilityFunctions.addEvents(deleteIcons, "click", deleteResponse);
 
-    }
-
-    let addHoverEvents = function (elemArray) {
-        for (let i = 0; i < elemArray.length; i++) {
-            elemArray[i].addEventListener("mouseover", showMenu);
-            elemArray[i].addEventListener("mouseout", hideMenu);
-        }
+        filterWittyResponses.init(container);
     }
 
     let showMenu = function () {
         let menu = this.querySelector(".response-menu");
 
-        if (menu.classList.contains("d-none")) {
-            menu.classList.remove("d-none");
-        }
+        utilityFunctions.showElement(menu);
     }
 
     let hideMenu = function () {
         let menu = this.querySelector(".response-menu");
 
-        if (!menu.classList.contains("d-none"))
-            menu.classList.add("d-none");
-    }
-
-    let addDeleteEvents = function (elemArray) {
-        for (let i = 0; i < elemArray.length; i++) {
-            elemArray[i].addEventListener("click", deleteResponse);
-        }
+        utilityFunctions.hideElement(menu);
     }
 
     let deleteResponse = function () {
@@ -66,4 +53,4 @@
     return {
         init: init
     };
-}(WittyEntryService);
+}(WittyEntryService, FilterWittyResponses, UtilityFunctions);

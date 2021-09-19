@@ -7,12 +7,56 @@
             @Model.WittyEntry.Question
         </div>
     </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="dropdown float-start me-2">
+                <button class="btn btn-outline-default dropdown-toggle" 
+                        type="button" 
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                    Filter by Category
+                </button>
+                <ul class="dropdown-menu" 
+                    data-bs-auto-close="false" 
+                    aria-labelledby="dropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item" 
+                           data-category="all" 
+                           data-all-categories="@Model.StringifyCategories()" 
+                           href="#">
+                            <input type="checkbox" />&nbsp;All Categories
+                        </a>
+                    </li>
+                    @{
+                        List<string> categories = Model.GetCategories();
+
+                        foreach (string category in categories)
+                        {
+                            <li>
+                                <a class="dropdown-item" 
+                                   data-category="@category" 
+                                   href="#">
+                                    <input type="checkbox" />&nbsp;@category
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="float-start">
+                <button class="btn submit-btn apply-filter">
+                    Apply Filter
+                </button>
+            </div>
+        </div>
+    </div>
     @{ 
         var groupedResponse = Model.ResponsesGroupedByCategory();
 
         foreach(var group in groupedResponse)
             {
-                <div class="card mt-5 response-card-group">
+                <div class="card mt-5 response-card-group" data-category="@group.Key">
                     <div class="card-header">
                         @group.Key
                     </div>
@@ -38,7 +82,7 @@
 @section Scripts {
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        GetController.init("response-list-container");
+        GetWittyEntryController.init("response-list-container");
     });
 </script>
 }

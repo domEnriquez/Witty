@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Witty.Models;
 
 namespace Witty.ViewModels
@@ -18,5 +19,21 @@ namespace Witty.ViewModels
             return WittyEntry.Responses.GroupBy(r => r.ResponseCategory);
         }
 
+        public List<string> GetCategories()
+        {
+            return ResponsesGroupedByCategory().Select(r => r.Key).ToList();
+        }
+
+        public string StringifyCategories()
+        {
+            List<string> categories = GetCategories();
+            StringBuilder catBuilder = new StringBuilder();
+            catBuilder.Append("all,");
+
+            foreach(string category in categories)
+                catBuilder.Append(category).Append(",");
+
+            return catBuilder.ToString();
+        }
     }
 }
