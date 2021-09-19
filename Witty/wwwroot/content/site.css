@@ -45,6 +45,15 @@
 
 }
 
+.question-header {
+    font-size: 30px;
+    color: #FB8B23;
+}
+
+.delete-icon {
+    cursor: pointer;
+}
+
 .btn-outline-default {
     color: #FB8B23;
     border-color: #FB8B23;

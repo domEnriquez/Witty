@@ -3,7 +3,7 @@
 
 <div id="response-list-container" class="container">
     <div class="row mt-5">
-        <div class="col-12 text-center">
+        <div class="col-12 text-center fw-bold question-header">
             @Model.WittyEntry.Question
         </div>
     </div>
@@ -57,7 +57,7 @@
         foreach(var group in groupedResponse)
             {
                 <div class="card mt-5 response-card-group" data-category="@group.Key">
-                    <div class="card-header">
+                    <div class="card-header fw-bold text-center orange-color">
                         @group.Key
                     </div>
                     <ul class="list-group list-group-flush response-list">
@@ -67,7 +67,7 @@
                             @r.ResponseString
                             <div class="float-end response-menu d-none">
                                 <i 
-                                   class="fas fa-trash-alt delete-icon" 
+                                   class="fas fa-trash-alt delete-icon orange-color" 
                                    data-response-id="@r.Id"
                                    data-witty-entry-id="@Model.WittyEntry.Id"></i>
                             </div>
