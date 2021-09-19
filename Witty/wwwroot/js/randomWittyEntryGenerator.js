@@ -15,7 +15,7 @@
 
         setInterval(function () {
             wittyEntryService.getRandomWittyEntry(doneGetRandom, failGetRandom);
-        }, 3000);
+        }, 7000);
     }
 
     let initialDoneGetRandom = function (randEntry) {
